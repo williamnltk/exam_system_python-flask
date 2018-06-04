@@ -1,0 +1,175 @@
+{% extends 'base.html' %}
+{% block title %}
+    首页
+{% endblock %}
+
+{% block head %}
+    <script src="{{ url_for('static', filename='javascript/index.js') }}"></script>
+    <link rel="stylesheet" href="{{ url_for('static',filename='css/index.css') }}">
+    <script src="{{ url_for('static', filename='bootstrap/js/bootstrapValidator.js') }}"></script>
+{% endblock %}
+
+{% block body %}
+    <body>
+    <div>
+        <nav class="navbar navbar-expand-sm font-navbar navbar-dark fixed-top" id="my-navbar">
+            <div class="container">    {#  这个class的作用是，让两边有空闲地区  #}
+                <a class="navbar-brand" href="#">
+                    <span class="glyphicon glyphicon-tags"></span>
+                </a>
+                <button class="navbar-toggler" type="button" data-toggle="collapse"
+                        data-target="#navbarSupportedContent"
+                        aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+
+                <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                    <ul class="navbar-nav mr-auto">
+                        <li class="nav-item active li-navbar rounded">
+                            <a class="nav-link" href="{{ url_for('index') }}">首页<span class="sr-only">(current)</span></a>
+                        </li>
+                    </ul>
+                    <div class="form-inline my-2 my-lg-0" id="unLogin">
+                        {% if name %}
+                        <div class="btn-group" style="padding:0 0;margin-right: 12.39px">
+                            <button type="button" id="personalcenter" class="btn btn-info dropdown-toggle  my-2 my-sm-0 form-control" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">{{ name }}</button>
+                            <div class="dropdown-menu"><a class="dropdown-item" href="{{ url_for('result') }}">考试记录</a>
+                                <a class="dropdown-item" href="#">虚位以待</a>
+                                <a class="dropdown-item" href="#">虚位以待</a>
+                                <div class="dropdown-divider"></div>
+                                <a class="dropdown-item" href="#">虚位以待</a>
+                            </div>
+                        </div>
+                            <button type="button" class="btn btn-secondary form-control my-2 my-sm-0" id="logout-button">注销</button>
+                        {% else %}
+                        <button type="button" class="btn btn-primary form-control mr-sm-2" id="login-button">登录</button>
+                        <button type="button" class="btn btn-success form-control my-2 my-sm-0" id="register-button">
+                            注册
+                        </button>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </nav>
+    </div>
+    <div style="position: relative;">
+        <div>
+            <img class="img-hover" src="{{ url_for('static', filename='images/work3.jpg') }}" alt="" id="img-hover">
+        </div>
+        <div class="div-hover" id="div-hover">
+
+        </div>
+        <div class="div-title" id="div-title">
+            职业技术能力测试
+            <div class="div-button" id="div-button">
+                <button class="btn btn-primary" id="left-button">开始考试</button>
+                <button class="btn btn-light" id="right-button">了解更多</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" tabindex="-1" role="dialog" id="login-modal">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">登录</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form class='needs-validation' novalidate id="LoginForm">
+                        <div class="form-group">
+                            <label for="EmailLogin">邮箱地址</label>
+                            <input type="email" class="form-control" id="EmailLogin" aria-describedby="emailHelp"
+                                   placeholder="Enter email" required>
+                            <small id="emailHelp" class="form-text text-muted">We'll never share your email with anyone
+                                else.
+                            </small>
+                            <div class="invalid-feedback" id="loginEmailFeedback">
+                                邮箱格式错误
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="PasswordLogin">登录密码</label>
+                            <input type="password" class="form-control" id="PasswordLogin" placeholder="Password"
+                                   required
+                                   pattern="[0-9a-zA-Z]{8,16}">
+                            <p class="password-error" id="passwordError"></p>
+                            <div class="invalid-feedback">
+                                密码格式要求长度8到16位，可以是数字和字母.
+                            </div>
+                        </div>
+                        <div class="form-check">
+                            <input type="checkbox" class="form-check-input" id="exampleCheck1">
+                            <label class="form-check-label" for="exampleCheck1">记住我</label>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary" id="loginCheck">登录</button>
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">取消</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal fade" tabindex="-1" role="dialog" id="register-modal">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">注册</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form class='needs-validation' novalidate id="registerForm">
+                        <div class="form-group">
+                            <label for="EmailRegister">邮箱地址</label>
+                            <input type="email" class="form-control" id="EmailRegister" aria-describedby="emailHelp"
+                                   placeholder="Email Address" required>
+                            <small id="emailHelp" class="form-text text-muted">We'll never share your email with anyone
+                                else.
+                            </small>
+                            <span class="emailHas" id="emailHas"></span>
+                            <div class="invalid-feedback">
+                                邮箱格式错误
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <lable for="examNumber">准考证号</lable>
+                            <input type="text" class="form-control" id="examNumber"
+                                   placeholder="Examination Card Number" required>
+                            <div class="invalid-feedback">
+                                准考证号不能为空
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <lable for="username">真实姓名</lable>
+                            <input type="text" class="form-control" id="username" placeholder="Full Name" required
+                                   pattern="^[\u4e00-\u9fa5]+(·[\u4e00-\u9fa5]+)*$">
+                            <div class="invalid-feedback">
+                                姓名要求为汉字
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="PasswordRegister">登录密码</label>
+                            <input type="password" class="form-control" id="PasswordRegister" placeholder="Password"
+                                   required
+                                   pattern="[0-9a-zA-Z]{8,16}">
+                            <div class="invalid-feedback">
+                                密码格式要求长度8到16位，可以是数字和字母.
+                            </div>
+                        </div>
+                        <small id="emailHelp" class="form-text text-muted">注册即代表同意《协议》</small>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary" id="registerCheck">注册</button>
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">取消</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    </body>
+{% endblock %}
